@@ -12,4 +12,3 @@
         this.sprzetID = licznikSprzetu++;
     }
 }
-//feat: create abstract Sprzet class with auto-ID generation
