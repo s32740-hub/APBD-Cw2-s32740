@@ -1,9 +1,9 @@
 ﻿public abstract class Sprzet
 {
     private static int licznikSprzetu = 0;
-    public string name { get; set; };
-    public string status { get; set; };
-    public int sprzetID { get; private set; };
+    public string name { get; set; }
+    public string status { get; set; }
+    public int sprzetID { get; private set; }
     public string producent { get; set; }
     public decimal cena { get; set; }
     public int rokProdukcji { get; set; }
