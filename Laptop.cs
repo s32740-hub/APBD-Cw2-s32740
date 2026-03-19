@@ -5,9 +5,12 @@
     public string OS{get; set;}
     public Laptop(string name, 
         string status,
+        string producent,
+        decimal cena,
+        int rokProdukcji,
         string procesor,
         int wielkoscRAM,
-        string OS) : base(name, status)
+        string OS) : base(name, status,  producent, cena, rokProdukcji)
     {
         this.wielkoscRAM = wielkoscRAM;
         this.OS = OS;
