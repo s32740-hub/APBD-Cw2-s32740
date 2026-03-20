@@ -4,7 +4,7 @@ SprzetManager manager = new SprzetManager();
 
 Laptop mojLaptop = new Laptop(
     "Dell XPS",
-    "Dostępny",
+    StatusSprzet.Dostepny,
     "Dell",
     6500.00m,
     2023,

@@ -4,7 +4,7 @@
     public string typMatrycy { get; set; }
     public string mocowanie { get; set; }
     public Camera(string name, 
-        string status,
+        StatusSprzet status,
         string producent,
         decimal cena,
         int rokProdukcji,

@@ -4,7 +4,7 @@
     public int wielkoscRAM { get; set; }
     public string OS{get; set;}
     public Laptop(string name, 
-        string status,
+        StatusSprzet status,
         string producent,
         decimal cena,
         int rokProdukcji,

@@ -14,7 +14,7 @@
     }
     public void GetSprzetDostepny()
     {
-        this.ListaSprzet.Where(s=>s.status.ToLower()=="dostępny").ToList()
+        this.ListaSprzet.Where(s=>s.status==StatusSprzet.Dostepny).ToList()
             .ForEach(s => Console.WriteLine(
                 $"[DOSTĘPNY] Sprzęt: {s.name}"));
     }

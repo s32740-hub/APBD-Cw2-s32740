@@ -3,7 +3,7 @@
     public int jasnoscLumeny { get; set; }
     public string maksymalnaRozdzielczosc { get; set; }
     public Projector(string name, 
-        string status,
+        StatusSprzet status,
         string producent,
         decimal cena,
         int rokProdukcji,
