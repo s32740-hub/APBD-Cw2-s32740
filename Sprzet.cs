@@ -2,8 +2,7 @@
 {
     Dostepny,
     Wypozyczony,
-    W_Serwisie,
-    Uszkodzony
+    Niedostepny
 }
 public abstract class Sprzet
 {
@@ -27,5 +26,10 @@ public abstract class Sprzet
         this.producent = producent;
         this.cena = cena;
         this.rokProdukcji = rokProdukcji;
+    }
+
+    public void Uszkodzenie()
+    {
+        status = StatusSprzet.Niedostepny;
     }
 }
