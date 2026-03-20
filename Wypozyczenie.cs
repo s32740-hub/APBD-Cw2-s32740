@@ -42,5 +42,14 @@ public class Wypozyczenie
             }
         }
     }
-    
+
+    public override string ToString()
+    {
+        return $"Użytkownik: {Uzytkownik}," +
+               $"\n Sprzęt: {Sprzet}," +
+               $"\n Data Wypożyczenia: {DataWypozyczenia}," +
+               $"\n Termin Zwrotu: {TerminZwrotu}," +
+               $"\n Data Faktycznego Zwrotu: {DataFaktycznegoZwrotu}," +
+               $"\n Naliczona Kara: {NaliczonaKara}";
+    }
 }
