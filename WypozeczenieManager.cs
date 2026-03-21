@@ -5,41 +5,52 @@ public class WypozeczenieManager
     public List<Wypozyczenie> WszystkieWypozyczenia { get; private set; } = new List<Wypozyczenie>();
     private static int limitStudent = 2;
     private static int limitPracownik = 5;
-    void AddWypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, DateTime terminZwrotu, DateTime ? dataWypozyczenia = null)
+    public void AddWypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, DateTime? terminZwrotu, DateTime ? dataWypozyczenia = null)
     {
         int aktywne = WszystkieWypozyczenia.Count(w => w.Uzytkownik.UserId == uzytkownik.UserId && 
                                                        w.DataFaktycznegoZwrotu == null);
-        if (uzytkownik is Student && aktywne > limitStudent || uzytkownik is Pracownik && aktywne>limitPracownik)
+        if (uzytkownik is Student && aktywne >= limitStudent || uzytkownik is Pracownik && aktywne>=limitPracownik)
         {
             throw new InvalidOperationException($"Nie można wypożyczyć sprzęt użytkownikowi " +
                                                 $"{uzytkownik.Name}, ponieważ już przekroczył " +
                                                 $"limit możliwych wypożyczeń.");
         }
-        DateTime dataStartu = dataWypozyczenia ?? DateTime.Now;
-        Wypozyczenie wypozyczenie = new Wypozyczenie(uzytkownik, sprzet, dataStartu, terminZwrotu);
+        Wypozyczenie wypozyczenie = new Wypozyczenie(uzytkownik, sprzet, dataWypozyczenia, terminZwrotu);
         WszystkieWypozyczenia.Add(wypozyczenie);
         Console.WriteLine($"Użytkownik {uzytkownik.Name} wypożyczył sprzęt {sprzet.name}");
     }
+    public void ZakonczWypozyczenie(int idSprzetu, DateTime? dataFaktycznegoZwrotu = null)
+    {
+        var wypozyczenie = WszystkieWypozyczenia.FirstOrDefault(w => 
+            w.Sprzet.sprzetID == idSprzetu && w.DataFaktycznegoZwrotu == null);
 
-    void WypiszAktywneWypozyczenia(Uzytkownik uzytkownik)
+        if (wypozyczenie == null)
+        {
+            throw new InvalidOperationException($"Nie znaleziono aktywnego wypożyczenia dla sprzętu o ID: {idSprzetu}");
+        }
+
+        wypozyczenie.Zwrot(dataFaktycznegoZwrotu);
+
+        Console.WriteLine($"[ZWRÓCONO] {wypozyczenie.Sprzet.name}. Kara: {wypozyczenie.NaliczonaKara} PLN");
+    }
+
+    public void WypiszAktywneWypozyczenia(Uzytkownik uzytkownik)
     {
         WszystkieWypozyczenia.Where(w=>w.Uzytkownik.UserId == uzytkownik.UserId 
                                        &&  w.DataFaktycznegoZwrotu == null).ToList()
             .ForEach(w=> Console.WriteLine(w));
     }
 
-    void WypiszPrzeterminiowane()
+    public void WypiszPrzeterminiowane()
     {
-        WszystkieWypozyczenia.Where(w=> w.DataFaktycznegoZwrotu > w.TerminZwrotu && 
-                                        w.DataFaktycznegoZwrotu == null).ToList()
+        WszystkieWypozyczenia.Where(w=> w.DataFaktycznegoZwrotu == null && DateTime.Now > w.TerminZwrotu).ToList()
             .ForEach(w=> Console.WriteLine(w));
     }
 
-    void WygenerowacRaport()
+    public void WygenerowacRaport()
     {
         int IloscAktualnychWypozyczen = WszystkieWypozyczenia.Count(w => w.DataFaktycznegoZwrotu == null);
-        int IloscPrzeterminiowanychWypozyczen = WszystkieWypozyczenia.Count(w=> w.DataFaktycznegoZwrotu > w.TerminZwrotu && 
-            w.DataFaktycznegoZwrotu == null);
+        int IloscPrzeterminiowanychWypozyczen = WszystkieWypozyczenia.Count(w=> w.DataFaktycznegoZwrotu == null && DateTime.Now > w.TerminZwrotu);
         int IloscWypozyczenZNaliczonaKara = WszystkieWypozyczenia.Count(w => w.NaliczonaKara != 0);
         int Wszystkie = WszystkieWypozyczenia.Count();
         
@@ -47,6 +58,7 @@ public class WypozeczenieManager
         Console.WriteLine($"Ilość Wszystkich Wypożyczeń: {Wszystkie}");
         Console.WriteLine($"Ilość Aktualnych Wypożyczeń: {IloscAktualnychWypozyczen}");
         Console.WriteLine($"Ilość Przeterminiowanych Wypożyczeń: {IloscPrzeterminiowanychWypozyczen}");
+        this.WypiszPrzeterminiowane();
         Console.WriteLine($"Ilość Wypożyczeń Z Naliczoną Karą: {IloscWypozyczenZNaliczonaKara}");
         Console.WriteLine("Najstarsze wypożyczenia:");
         WszystkieWypozyczenia.Where(w=> w.DataWypozyczenia == (WszystkieWypozyczenia.Min(w => w.DataWypozyczenia)))
