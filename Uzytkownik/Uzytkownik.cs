@@ -1,5 +1,7 @@
-﻿namespace Wypozyczalnia;
-
+﻿using System.Text.Json.Serialization;
+namespace Wypozyczalnia;
+[JsonDerivedType(typeof(Student), "student")]
+[JsonDerivedType(typeof(Pracownik), "pracownik")]
 public abstract class Uzytkownik
 {
     private static int LicznikUzytkownikow = 0;
@@ -14,5 +16,9 @@ public abstract class Uzytkownik
         this.Nazwisko = nazwisko;
         this.TypUzytkownika = typUzytkownika;
         this.UserId = LicznikUzytkownikow++;
+    }
+    public static void UpdateNextId(int newId)
+    {
+        LicznikUzytkownikow = newId;
     }
 }

@@ -1,9 +1,13 @@
-﻿public enum StatusSprzet
+﻿using System.Text.Json.Serialization;
+public enum StatusSprzet
 {
     Dostepny,
     Wypozyczony,
     Niedostepny
 }
+[JsonDerivedType(typeof(Laptop), "laptop")]
+[JsonDerivedType(typeof(Camera), "camera")]
+[JsonDerivedType(typeof(Projector), "projector")]
 public abstract class Sprzet
 {
     private static int licznikSprzetu = 0;
@@ -31,5 +35,9 @@ public abstract class Sprzet
     public void Uszkodzenie()
     {
         status = StatusSprzet.Niedostepny;
+    }
+    public static void UpdateNextId(int newId)
+    {
+        licznikSprzetu = newId;
     }
 }
